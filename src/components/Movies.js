@@ -56,7 +56,7 @@ export default class Movies extends Component {
                             <tr>
                                 <th>{elem.id}</th>
                                 <th>{elem.name}</th>
-                                <th>{elem.directedby}</th>
+                                <th>{elem.directedBy}</th>
                                 <th>{elem.country}</th>
                                 <th>{elem.budget}</th>
                                 <th>{elem.releaseDate}</th>

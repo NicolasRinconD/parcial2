@@ -9,15 +9,13 @@ export default class MovieDetail extends Component {
 
   render() {
     return <Card style={{ width: '18rem' }}>
+    <Card.Img variant="top" src={this.props.poster} />
     <Card.Body>
-      <Card.Title>Card Title</Card.Title>
-      <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+      <Card.Title>{this.props.name}</Card.Title>
       <Card.Text>
-        Some quick example text to build on the card title and make up the bulk of
-        the card's content.
+        {this.props.description}
       </Card.Text>
-      <Card.Link href="#">Card Link</Card.Link>
-      <Card.Link href="#">Another Link</Card.Link>
+      <strong>Cast: {this.props.cast} </strong>
     </Card.Body>
   </Card>
   }
