@@ -38,7 +38,7 @@ export default class Bars extends Component{
 
         const bars = g.selectAll("rect").data(data);
 
-        const rect = bars.enter().append("rect")
+        bars.enter().append("rect")
             .attr("class", "bar")
             .style("fill", "steelblue")
             .attr("x", d => x(d.id))
