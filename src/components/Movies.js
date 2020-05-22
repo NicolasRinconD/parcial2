@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
-import i18n from '../i18n';
-import i18next from 'i18next';
+import MovieDetail from './MovieDetail';
 export default class Movies extends Component {
     constructor(props) {
         super(props);
@@ -10,9 +9,11 @@ export default class Movies extends Component {
             movies: [],
             err: ''
         };
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
+        document.addEventListener('click', this.handleClick);
         if (!navigator.onLine) {
             if (localStorage.getItem('characters') === null) {
                 this.setState({ err: '!OOPS, Something Happened...\n Retry Again Later' });
@@ -33,12 +34,23 @@ export default class Movies extends Component {
             .then(res => {
                 this.setState( {movies : res});
                 localStorage.setItem('movies', this.state.movies);
-                console.log(this.state.movies, i18next.language);
+                console.log(this.state.movies);
             });
     }
 
-    render() {
-        return <div>
+    handleClick(e) {
+        if (this.node.contains(e.target)) {
+          console.log('You clicked INSIDE the component.')
+        } else {
+          console.log('You clicked OUTSIDE the component.')
+        }
+      }
+     
+
+    render() {      
+
+
+        return( <div>
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -53,20 +65,13 @@ export default class Movies extends Component {
                 </thead>
                 <tbody>
                     {this.state.movies.map((elem, i) => (
-                            <tr>
-                                <th>{elem.id}</th>
-                                <th>{elem.name}</th>
-                                <th>{elem.directedBy}</th>
-                                <th>{elem.country}</th>
-                                <th>{elem.budget}</th>
-                                <th>{elem.releaseDate}</th>
-                                <th>{elem.views}</th>
-                            </tr>
+                            <MovieDetail key={i} movie={elem} />
                     ))}
 
                 </tbody>
             </Table>
         </div>
+        )
     }
 }
 

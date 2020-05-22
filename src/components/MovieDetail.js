@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {Card} from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
+import { FormattedDate, FormattedNumber, FormattedPlural, FormattedMessage } from 'react-intl';
 export default class MovieDetail extends Component {
     constructor(props) {
         super(props);
@@ -7,16 +8,27 @@ export default class MovieDetail extends Component {
         };
     }
 
-  render() {
-    return <Card style={{ width: '18rem' }}>
-    <Card.Img variant="top" src={this.props.poster} />
-    <Card.Body>
-      <Card.Title>{this.props.name}</Card.Title>
-      <Card.Text>
-        {this.props.description}
-      </Card.Text>
-      <strong>Cast: {this.props.cast} </strong>
-    </Card.Body>
-  </Card>
-  }
+    render() {
+        return (
+        <tr>
+            <th scope="row">{this.props.movie.id}</th>
+            <td>{this.props.movie.name}</td>
+            <td>{this.props.movie.directedBy}</td>
+            <td>{this.props.movie.country}</td>
+            <td>{this.props.movie.budget}</td>
+            <td>
+                <FormattedNumber value={this.props.movie.views} />
+            </td>
+            <td>
+                <FormattedDate
+                    value={new Date(this.props.movie.date)}
+                    year='numeric'
+                    month='long'
+                    day='numeric'
+                    weekday='long'
+                />
+            </td>
+        </tr>
+        )
+    }
 }

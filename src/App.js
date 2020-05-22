@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Movies from './components/Movies';
+import Bars from './components/Bars';
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <Movies />
     </div>
-
+      <Bars />
     </div>
     
   );

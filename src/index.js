@@ -2,13 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Movies from './components/Movies';
+import {IntlProvider} from 'react-intl';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import localeEsMessages from "./locales/es.json";
+import localeEnMessages from "./locales/en.json";
+
+let language = navigator.languages[0];
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+  <IntlProvider locale={language} messages= {language === "es-ES"? localeEsMessages : localeEnMessages}>
+		<App />
+  </IntlProvider>, 
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
