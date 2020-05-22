@@ -1,3 +1,11 @@
 {
-    
+	"Name": "Nombre",
+	"DirectedBy": "Director",
+	"Cast": "Elenco",
+	"Country": "Country",
+	"ReleaseDate": "Fecha de lanzamiento",
+    "Views": "Vistas",
+    "Singular": "millón",
+    "Plural": "millones",
+    "Budget": "Presupuesto"
 }

@@ -7,11 +7,15 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import localeEsMessages from "./locales/es.json";
 import localeEnMessages from "./locales/en.json";
+const messages = {
+  'es': localeEsMessages,
+  'en': localeEnMessages
+};
 
-let language = navigator.languages[0];
+const language = navigator.language.split(/[-_]/)[0];
 
 ReactDOM.render(
-  <IntlProvider locale={language} messages= {language === "es-ES"? localeEsMessages : localeEnMessages}>
+  <IntlProvider locale={language} messages= {messages[language]}>
 		<App />
   </IntlProvider>, 
   document.getElementById("root")

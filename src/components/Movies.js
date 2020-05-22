@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Card, Row, Col } from 'react-bootstrap';
 import MovieDetail from './MovieDetail';
+import {FormattedMessage} from 'react-intl';
 export default class Movies extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            langu: '',
             movies: [],
-            err: ''
+            err: '',
+            movie: 0
         };
         this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
-        document.addEventListener('click', this.handleClick);
         if (!navigator.onLine) {
             if (localStorage.getItem('characters') === null) {
                 this.setState({ err: '!OOPS, Something Happened...\n Retry Again Later' });
@@ -23,54 +23,80 @@ export default class Movies extends Component {
             }
         }
 
-        this.setState({
-            langu: navigator.languages
-                ? navigator.languages[0]
-                : (navigator.language || navigator.userLanguage)
-        });
+        if (this.props.int.locale === 'en' || this.props.int.locale === 'en-ES') {
+            fetch('https://gist.githubusercontent.com/josejbocanegra/8b436480129d2cb8d81196050d485c56/raw/48cc65480675bf8b144d89ecb8bcd663b05e1db0/data-en.json')
+                .then(result => result.json())
+                .then(res => {
+                    this.setState({ movies: res });
+                    localStorage.setItem('movies', this.state.movies);
+                    console.log(this.state.movies);
+                });
 
-        fetch('https://gist.githubusercontent.com/josejbocanegra/8b436480129d2cb8d81196050d485c56/raw/48cc65480675bf8b144d89ecb8bcd663b05e1db0/data-en.json')
-            .then(result => result.json())
-            .then(res => {
-                this.setState( {movies : res});
-                localStorage.setItem('movies', this.state.movies);
-                console.log(this.state.movies);
-            });
+        }
+        else {
+            fetch('https://gist.githubusercontent.com/josejbocanegra/f784b189117d214578ac2358eb0a01d7/raw/2b22960c3f203bdf4fac44cc7e3849689218b8c0/data-es.json')
+                .then(result => result.json())
+                .then(res => {
+                    this.setState({ movies: res });
+                    localStorage.setItem('movies', this.state.movies);
+                    console.log(this.state.movies);
+                });
+        }
     }
 
-    handleClick(e) {
-        if (this.node.contains(e.target)) {
-          console.log('You clicked INSIDE the component.')
-        } else {
-          console.log('You clicked OUTSIDE the component.')
+    handleClick = (i) => {
+        this.setState({ movie: i });
+    }
+
+
+    render() {
+        let display = null;
+        if (this.state.movie !== 0) {
+            display = (
+                <Card style={{ width: '18rem' }}>
+                    <Card.Img variant="top" src={this.state.movies[this.state.movie - 1].poster} />
+                    <Card.Body>
+                        <Card.Title>{this.state.movies[this.state.movie - 1].name}</Card.Title>
+                        <Card.Text>
+                            {this.state.movies[this.state.movie - 1].description}
+                        </Card.Text>
+                        <strong><FormattedMessage id="Cast"/>: {this.state.movies[this.state.movie - 1].cast} </strong>
+                    </Card.Body>
+                </Card>
+            )
         }
-      }
-     
-
-    render() {      
 
 
-        return( <div>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Directed By</th>
-                        <th>Country </th>
-                        <th>Budget</th>
-                        <th>Release</th>
-                        <th>Views</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.state.movies.map((elem, i) => (
-                            <MovieDetail key={i} movie={elem} />
-                    ))}
+        return (<div>
+            <Row>
+                <Col>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th><FormattedMessage id="Name" /></th>
+                                <th><FormattedMessage id="DirectedBy"/></th>
+                                <th><FormattedMessage id="Country"/> </th>
+                                <th><FormattedMessage id="Budget"/></th>
+                                <th><FormattedMessage id="ReleaseDate"/></th>
+                                <th><FormattedMessage id="Views"/></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.movies.map((elem, i) => (
+                                <MovieDetail key={i} movie={elem} pass={this.handleClick} />
+                            ))}
 
-                </tbody>
-            </Table>
+                        </tbody>
+                    </Table>
+                </Col>
+                <Col>
+                    {display}
+                </Col>
+
+            </Row>
         </div>
+
         )
     }
 }
